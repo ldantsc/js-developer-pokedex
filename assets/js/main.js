@@ -17,7 +17,7 @@ function convertPokemonToLi(pokemon) {
         <ol class="types">
         ${pokemon.types.map((type) => `<li class="type ${type}">${type}</li>`).join('')}
         </ol>
-        <img src="${pokemon.photo}"
+        <img class="pokemon-img" src="${pokemon.photo}"
         alt="${pokemon.name}">
         </div>
         <button onclick="popupButton(${pokemon.number})" class="btn-details">More details</button>
@@ -34,20 +34,23 @@ function detailPagePokemon(id) {
     pokemon.abilities = abilities
     const photo = pokemon.sprites.other.dream_world.front_default
     const classBg = pokemon.types[0].type.name
+    const convertWeightToPound = ((pokemon.weight / 10) * 2.2).toFixed(1)
+
+
     const detailHtml = `
     <div class="details-title ${classBg}">
-            <h1>${pokemon.name}</h1>
-            <button onclick="popupButton()" class="close-btn">X</button>
+        <h1>${pokemon.name}</h1>
+        <button onclick="popupButton()" class="return-btn"><i class="bi bi-arrow-left"></i></button>
     </div>
 
     <div class="details-container">
-    <img src="${photo}"alt="${pokemon.name}">
-    <ol id="more-detail" class="">
-        <li><span>name</span><span>${pokemon.name}</span></li>
-        <li><span>height</span><span>${pokemon.height}</span></li>
-        <li><span>weight</span><span>${pokemon.weight}</span></li>
-        <li><span>Abilities</span>${abilities.map((ability) => `<span>abilities</span>${ability.replace("-", " ")}</span>`).join('')}</li>
-    </ol>
+        <img class="details-image" src="${photo}" alt="${pokemon.name}">
+            <ol id="more-detail" class="detail-list upper">
+                ${pokemon.stats.map((pokemon) => `<li><span>${(pokemon.stat.name).replace('-', ' ')}</span><span class=${pokemon.stat.name}>${pokemon.base_stat}</span></li>`).join('')}
+                <li><span>height</span><span class="default-stats">${(pokemon.height/10).toFixed(2)}cm</span></li>
+                <li><span>weight</span><span class="default-stats">${convertWeightToPound}lb (${pokemon.weight / 10}kg)</span></li>
+                <li><span>abilities</span>${abilities.map((ability) => `<span class="default-stats pd-0">${ability.replace("-", " ")}</span>`)}</li>
+            </ol>
     </div>
         `
         details.innerHTML = detailHtml
